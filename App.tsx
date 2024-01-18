@@ -9,14 +9,13 @@ export default function App() {
   useEffect(() => {
     // Include your display statements to test below
     document.getElementById("output")!.innerText = "OUTPUT:\n";
-    display("hey");
-    const snake1 = new Snake();
-    const snake2 = new Snake();
-    snake1.move(2);
-    snake1.turn();
-    snake1.move(3);
-    display("snake1 has a position of:", snake1.position);
-    display("snake2 has a position of:", snake2.position);
+    const greenSnake = new Snake("green");
+    const blueSnake = new Snake("blue");
+    greenSnake.move(2);
+    greenSnake.turn();
+    greenSnake.move(3);
+    display("greenSnake has a position of:", greenSnake.position);
+    display("blueSnake has a position of:", blueSnake.position);
   }, []);
   return (
     <div className="App">
