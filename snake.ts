@@ -5,9 +5,11 @@
 class Snake {
   private currentPosition: number;
   private currentDirection: number;
-  constructor() {
+  private color: string;
+  constructor(snakeColor: string) {
     this.currentPosition = 0;
     this.currentDirection = 1;
+    this.color = snakeColor;
   }
   public move(squares: number) {
     if (this.currentDirection === 1) {
@@ -29,3 +31,4 @@ class Snake {
 }
 
 export default Snake;
+
