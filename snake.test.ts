@@ -1,6 +1,6 @@
 import Snake from "./Snake";
 
-const moveSnakes = (times: number, turn: boolean = false) => {
+/*const moveSnakes = (times: number, turn: boolean = false) => {
   const greenSnake = new Snake("green");
   const maroonSnake = new Snake("maroon");
   let totalSquares = 0;
@@ -52,9 +52,36 @@ describe("Addition", function () {
   it("sums numbers", () => {
     expect(1 + 1).toEqual(2);
   });
-  const outputElement = document.createElement("div");
-  outputElement.id = "output";
-  document.body.appendChild(outputElement);
+});*/
+
+describe("Snake Tests", () => {
+  let greenSnake: Snake;
+  let maroonSnake: Snake;
+
+  beforeEach(() => {
+    greenSnake = new Snake("green");
+    maroonSnake = new Snake("maroon");
+  });
+
+  test("Snake moves correctly to the right", () => {
+    greenSnake.move(3);
+    expect(greenSnake.position.x).toBe(3);
+    expect(greenSnake.position.y).toBe(0);
+  });
+
+  test("Snake turns and moves correctly", () => {
+    maroonSnake.turnRight();
+    maroonSnake.move(2);
+    expect(maroonSnake.position.x).toBe(0);
+    expect(maroonSnake.position.y).toBe(-2); // Assuming 'down' increases y-coordinate
+  });
+
+  test("Snake turns left and moves correctly", () => {
+    greenSnake.turnLeft();
+    greenSnake.move(1);
+    expect(greenSnake.position.x).toBe(0);
+    expect(greenSnake.position.y).toBe(+1); // Assuming 'up' decreases y-coordinate
+  });
 });
 
 export {};
