@@ -73,14 +73,14 @@ describe("Snake Tests", () => {
     maroonSnake.turnRight();
     maroonSnake.move(2);
     expect(maroonSnake.position.x).toBe(0);
-    expect(maroonSnake.position.y).toBe(-2); // Assuming 'down' increases y-coordinate
+    expect(maroonSnake.position.y).toBe(-2); 
   });
 
   test("Snake turns left and moves correctly", () => {
     greenSnake.turnLeft();
     greenSnake.move(1);
     expect(greenSnake.position.x).toBe(0);
-    expect(greenSnake.position.y).toBe(+1); // Assuming 'up' decreases y-coordinate
+    expect(greenSnake.position.y).toBe(+1); 
   });
 });
 
