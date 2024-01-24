@@ -1,12 +1,12 @@
 import Snake from "./Snake";
-import { worldModel } from "./Snake";
+import WorldModel from "./WorldModel";
 describe("WorldModel Tests", () => {
-  let Model: worldModel;
+  let Model: WorldModel;
   let snake: Snake;
 
   beforeEach(() => {
     snake = new Snake("green");
-    Model = new worldModel(snake);
+    Model = new WorldModel(snake);
   });
 
   test("WorldModel updates the Snake's position correctly", () => {
@@ -28,5 +28,11 @@ describe("WorldModel Tests", () => {
     expect(snake.position.x).toBe(0);
     expect(snake.position.y).toBe(1);
   });
+  test("Snake turns left twice and WorldModel updates its position correctly", () => {
+    snake.turnLeft();
+    snake.turnLeft();
+    Model.update(1);
+    expect(snake.position.x).toBe(-1);
+    expect(snake.position.y).toBe(0);
+  });
 });
-export {};

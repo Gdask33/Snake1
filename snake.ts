@@ -1,66 +1,14 @@
-// import display from "./display";
-
-// place your code on line 5 above the export statement below
-export class worldModel {
-  private snake: Snake;
-  /** 
- *constructs a world model with the given snake
- @param snake - snake that is bring used in the model
- */
-  constructor(snake: Snake) {
-    this.snake = snake;
-  }
-
-  /**
-   * updates the snake position
-   * @param steps - number of steps
-   */
-  public update(steps: number) {
-    this.snake.move(steps);
-  }
-  /**
-   * @returns updated coordinates for snake in the world model
-   */
-  public get Snake() {
-    return this.snake;
-  }
-}
-
-class Point {
-  private x_coordinate: number;
-  private y_corrdinate: number;
-
-  /**
-   * @param x - x coordinate
-   * @param y - y coordinate
-   */
-  constructor(x: number, y: number) {
-    this.x_coordinate = x;
-    this.y_corrdinate = y;
-  }
-
-  /**
-   * gets the x coordinate of the point
-   * @returns the x coordinate
-   */
-  public get x() {
-    return this.x_coordinate;
-  }
-  /**
-   * gets the y coordinate of the point
-   * @returns the y coordinate
-   */
-  public get y() {
-    return this.y_corrdinate;
-  }
-}
+import Point from "./Point";
 class Snake {
+  /**
+   * Represents a snake with Poistion, Direction, and color
+   */
   private currentPosition: Point;
   private currentDirection: string;
   private color: string;
   /**
+   * Constructs a snake with a specified color
    * @param color - the color of the snake
-   *
    */
   constructor(color: string) {
     this.color = color;
@@ -68,9 +16,17 @@ class Snake {
     this.currentDirection = "right";
   }
   /**
-   * @param squares - the number of squares to move
-   *
+   * Moves the snake in its current direction by the specified number of squares.
+   * @param squares - The number of squares to move.
    */
+  public get direction() {
+    return this.currentDirection;
+
+    /**
+     * @returns - the current direction of the snake
+     */
+  }
+  //moves the snake in the current direction
   public move(squares: number) {
     let newX: number = this.currentPosition.x;
     let newY: number = this.currentPosition.y;
@@ -86,13 +42,15 @@ class Snake {
     this.currentPosition = new Point(newX, newY);
   }
   /**
-   * gets the current position of the snake
-   * @returns - the current position as a Point object
-   *
+   * @returns The current direction of the snake.
    */
   public get position() {
     return this.currentPosition;
+    /**
+     * @returns the current poistion on x,y coordinate of snake
+     */
   }
+  //turns the snake to the right
   public turnRight() {
     if (this.currentDirection === "right") {
       this.currentDirection = "down";
@@ -104,6 +62,7 @@ class Snake {
       this.currentDirection = "right";
     }
   }
+  //turns the snake to the left
   public turnLeft() {
     if (this.currentDirection === "right") {
       this.currentDirection = "up";

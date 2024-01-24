@@ -1,87 +1,73 @@
 import Snake from "./Snake";
+import Point from "./Point";
 
-/*const moveSnakes = (times: number, turn: boolean = false) => {
-  const greenSnake = new Snake("green");
-  const maroonSnake = new Snake("maroon");
-  let totalSquares = 0;
-
-  for (let i = 0; i < times; i++) {
-    const numSquares1 = Math.floor(Math.random() * 100);
-    const numSquares2 = Math.floor(Math.random() * 100);
-    greenSnake.move(numSquares1);
-    maroonSnake.move(numSquares2);
-    greenSnake.move(5);
-    totalSquares += numSquares2;
-    if (turn) {
-      const numSquares3 = Math.floor(Math.random() * 100);
-      const numSquares4 = Math.floor(Math.random() * 10);
-      greenSnake.turn();
-      maroonSnake.turn();
-      maroonSnake.move(numSquares3);
-      totalSquares -= numSquares3;
-      greenSnake.move(numSquares3);
-      maroonSnake.turn();
-      maroonSnake.turn();
-      maroonSnake.turn();
-      maroonSnake.move(numSquares4);
-      totalSquares += numSquares4;
-    }
-  }
-
-  return { actual: maroonSnake.position, expected: totalSquares };
-};
-
-describe("Snake Tests", function () {
-  const tests = [0, 3, 10, 4].map((num, index) => moveSnakes(num, index > 2));
-
-  const testDescriptions = [
-    "starts with the correct position of 0",
-    "has the correct position after 3+ random moves",
-    "has the correct position after 10+ random moves",
-    "has the correct position after 4+ random moves with turns",
-  ];
-
-  testDescriptions.forEach((description, index) => {
-    it(description, () =>
-      expect(tests[index].expected).toBe(tests[index].actual),
-    );
-  });
-});
-
-describe("Addition", function () {
-  it("sums numbers", () => {
-    expect(1 + 1).toEqual(2);
-  });
-});*/
-
-describe("Snake Tests", () => {
-  let greenSnake: Snake;
-  let maroonSnake: Snake;
+describe("Snake class", () => {
+  let snake: Snake;
 
   beforeEach(() => {
-    greenSnake = new Snake("green");
-    maroonSnake = new Snake("maroon");
+    snake = new Snake("green");
   });
 
-  test("Snake moves correctly to the right", () => {
-    greenSnake.move(3);
-    expect(greenSnake.position.x).toBe(3);
-    expect(greenSnake.position.y).toBe(0);
+  test("constructor initializes properties correctly", () => {
+    expect(snake.position).toEqual(new Point(0, 0));
+    expect(snake.direction).toBe("right");
   });
 
-  test("Snake turns and moves correctly", () => {
-    maroonSnake.turnRight();
-    maroonSnake.move(2);
-    expect(maroonSnake.position.x).toBe(0);
-    expect(maroonSnake.position.y).toBe(-2); 
+  describe("move method", () => {
+    test("moves right correctly", () => {
+      snake.move(3);
+      expect(snake.position).toEqual(new Point(3, 0));
+    });
+
+    test("moves left correctly", () => {
+      snake.turnLeft();
+      snake.turnLeft();
+      snake.move(3);
+      expect(snake.position).toEqual(new Point(-3, 0));
+    });
+
+    test("moves up correctly", () => {
+      snake.turnLeft(); // Turn left to up
+      snake.move(3);
+      expect(snake.position).toEqual(new Point(0, 3));
+    });
+
+    test("moves down correctly", () => {
+      snake.turnRight(); // Now facing down
+      snake.move(3);
+      expect(snake.position).toEqual(new Point(0, -3));
+    });
   });
 
-  test("Snake turns left and moves correctly", () => {
-    greenSnake.turnLeft();
-    greenSnake.move(1);
-    expect(greenSnake.position.x).toBe(0);
-    expect(greenSnake.position.y).toBe(+1); 
+  describe("turnRight method", () => {
+    const directions = ["right", "down", "left", "up"];
+
+    directions.forEach((startDirection, index) => {
+      test(`turns from ${startDirection} to ${directions[(index + 1) % directions.length]}`, () => {
+        snake = new Snake("green"); // reset snake direction to right
+        for (let i = 0; i <= index; i++) {
+          snake.turnRight();
+        }
+        expect(snake.direction).toBe(
+          directions[(index + 1) % directions.length],
+        );
+      });
+    });
+  });
+
+  describe("turnLeft method", () => {
+    const directions = ["right", "up", "left", "down"];
+
+    directions.forEach((startDirection, index) => {
+      test(`turns from ${startDirection} to ${directions[(index + 1) % directions.length]}`, () => {
+        snake = new Snake("green"); // reset snake direction to right
+        for (let i = 0; i <= index; i++) {
+          snake.turnLeft();
+        }
+        expect(snake.direction).toBe(
+          directions[(index + 1) % directions.length],
+        );
+      });
+    });
   });
 });
-
-export {};
