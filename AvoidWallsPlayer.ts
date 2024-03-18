@@ -1,5 +1,6 @@
 import Player from "./Player";
 import SnakeController from "./SnakeController";
+import Snake from "./Snake";
 
 /**
  * A class representing a player that avoids walls in a snake game.
@@ -10,6 +11,7 @@ class AvoidWallsPlayer extends Player {
    * Constructs an AvoidWallsPlayer instance.
    * @param {SnakeController} snakeController - An instance of SnakeController to control the snake.
    */
+
   constructor(snakeController: SnakeController) {
     super(snakeController); // Call the parent class constructor
     this.sc = snakeController; // Store the SnakeController instance for later use
@@ -20,26 +22,69 @@ class AvoidWallsPlayer extends Player {
    */
   makeTurn(): void {
     // Retrieve the current state of the snake and the game world
-    const snake = this.sc.getsnake();
-    const snakeDirection: string = this.sc.getsnakeDirection();
-    const worldModel = this.sc.getWorldModel();
-    const position = this.sc.getsnakePosition();
-    const worldHeight = worldModel.getWorldHeight();
-    const worldWidth = worldModel.getWorldWidth();
+    const snakeDirection: string = this.sc.snakeDirection;
+    const worldModel = this.sc.WorldModel;
+    const position = this.sc.snakePosition;
+    const worldHeight = worldModel.WorldHeight;
+    const worldWidth = worldModel.WorldWidth;
 
     // Logic to avoid walls based on the snake's current direction and position
-    if (snakeDirection === "left" && position.x === -(worldWidth - 1)) {
-      // If the snake is moving left and at the left edge, turn it around
+    if (
+      snakeDirection === "left" &&
+      position.x <= 0 &&
+      position.y <= worldHeight / 2
+    ) {
+      console.log("left");
+      this.sc.turnSnakeDown();
+    } else if (
+      snakeDirection === "right" &&
+      position.x >= worldWidth - 1 &&
+      position.y <= worldHeight / 2
+    ) {
+      this.sc.turnSnakeDown();
+    } else if (
+      snakeDirection === "right" &&
+      position.x >= worldWidth - 1 &&
+      position.y > worldHeight / 2
+    ) {
+      this.sc.turnSnakeUp();
+    } else if (snakeDirection === "up" && position.y <= 0 && position.x <= 0) {
       this.sc.turnSnakeRight();
-    } else if (snakeDirection === "right" && position.x === worldWidth - 1) {
-      // If the snake is moving right and at the right edge, turn it right
-      this.sc.turnSnakeLeft();
-    } else if (snakeDirection === "up" && position.y === worldHeight - 1) {
-      // If the snake is moving up and at the top edge, turn it around
+    } else if (
+      snakeDirection === "up" &&
+      position.y < 1 &&
+      position.x > worldWidth / 2
+    ) {
+      this.sc.turnSnakeLeft(); //problem
+    } else if (
+      snakeDirection === "up" &&
+      position.y >= worldHeight - 1 &&
+      position.x <= worldWidth / 2
+    ) {
+      this.sc.turnSnakeUp();
+    } else if (snakeDirection === "up" && position.y <= 0 && position.x <= 0) {
       this.sc.turnSnakeRight();
-    } else if (snakeDirection === "down" && position.y === -(worldHeight - 1)) {
-      // If the snake is moving down and at the bottom edge, turn it around
+    } else if (
+      snakeDirection === "down" &&
+      position.y >= worldHeight - 1 &&
+      position.x > worldWidth / 2
+    ) {
       this.sc.turnSnakeLeft();
+      console.log("Hello");
+    } else if (
+      snakeDirection === "down" &&
+      position.y >= worldHeight - 1 &&
+      position.x < worldWidth / 2
+    ) {
+      this.sc.turnSnakeRight();
+    } else if (
+      snakeDirection === "left" &&
+      position.x <= 0 &&
+      position.y > worldHeight / 2
+    ) {
+      this.sc.turnSnakeUp(); //problem
+      console.log("Hello");
+      console.log("i", worldWidth, worldHeight);
     }
   }
 }

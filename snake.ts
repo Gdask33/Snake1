@@ -3,87 +3,106 @@ class Snake {
   /**
    * Represents a snake with Poistion, Direction, and color
    */
-  private currentPosition: Point;
-  private currentDirection: string;
-  private color: string;
+  private currentPosition__: Point;
+  private currentDirection__: string;
+  private color__: string;
   /**
    * Constructs a snake with a specified color
    * @param color - the color of the snake
    */
   constructor(color: string) {
-    this.color = color;
-    this.currentPosition = new Point(0, 0);
-    this.currentDirection = "right";
+    this.color__ = color;
+    this.currentPosition__ = new Point(0, 0);
+    this.currentDirection__ = "right";
   }
   /**
    * Moves the snake in its current direction by the specified number of squares.
    * @param squares - The number of squares to move.
    */
-  public get direction() {
-    return this.currentDirection;
+  public get direction(): string {
+    return this.currentDirection__;
 
     /**
      * @returns - the current direction of the snake
      */
   }
-  //moves the snake in the current direction
-  public move(squares: number) {
-    let newX: number = this.currentPosition.x;
-    let newY: number = this.currentPosition.y;
-    if (this.currentDirection === "right") {
-      newX += squares;
-    } else if (this.currentDirection === "left") {
-      newX -= squares;
-    } else if (this.currentDirection === "up") {
-      newY += squares;
-    } else if (this.currentDirection === "down") {
-      newY -= squares;
-    }
-    this.currentPosition = new Point(newX, newY);
-  }
   /**
    * @returns The current direction of the snake.
    */
-  public get position() {
-    return this.currentPosition;
+  public get position(): Point {
+    return this.currentPosition__;
     /**
      * @returns the current poistion on x,y coordinate of snake
      */
   }
+  public set position(newPosition: Point) {
+    this.currentPosition__ = newPosition;
+  }
+  public set direction(newDirection: string) {
+    this.currentDirection__ = newDirection;
+  }
+  //moves the snake in the current direction
+  public move(squares: number) {
+    let newX: number = this.position.x;
+    let newY: number = this.position.y;
+    if (this.direction === "right") {
+      newX += squares;
+    } else if (this.direction === "left") {
+      newX -= squares;
+    } else if (this.direction === "up") {
+      newY -= squares;
+    } else if (this.direction === "down") {
+      newY += squares;
+    }
+    this.position = new Point(newX, newY);
+  }
+
   //turns the snake to the right
   public turnRight() {
-    if (this.currentDirection === "right") {
-      this.currentDirection = "down";
-    } else if (this.currentDirection === "down") {
-      this.currentDirection = "left";
-    } else if (this.currentDirection === "left") {
-      this.currentDirection = "up";
-    } else if (this.currentDirection === "up") {
-      this.currentDirection = "right";
+    if (this.direction === "right") {
+      this.direction = "right";
+    } else if (this.direction === "down") {
+      this.direction = "right";
+    } else if (this.direction === "left") {
+      this.direction = "right";
+    } else if (this.direction === "up") {
+      this.direction = "right";
     }
   }
   //turns the snake to the left
   public turnLeft() {
-    if (this.currentDirection === "right") {
-      this.currentDirection = "up";
-    } else if (this.currentDirection === "up") {
-      this.currentDirection = "left";
-    } else if (this.currentDirection === "left") {
-      this.currentDirection = "down";
-    } else if (this.currentDirection === "down") {
-      this.currentDirection = "right";
+    if (this.direction === "right") {
+      this.direction = "left";
+    } else if (this.direction === "up") {
+      this.direction = "left";
+    } else if (this.direction === "left") {
+      this.direction = "left";
+    } else if (this.direction === "down") {
+      this.direction = "left";
+    }
+  }
+  public turnDown() {
+    if (this.direction === "right") {
+      this.direction = "down";
+    } else if (this.direction === "left") {
+      this.direction = "down";
+    } else if (this.direction === "up") {
+      this.direction = "down";
+    } else if (this.direction === "down") {
+      this.direction = "down";
+    }
+  }
+  public turnUp() {
+    if (this.direction === "right") {
+      this.direction = "up";
+    } else if (this.direction === "left") {
+      this.direction = "up";
+    } else if (this.direction === "up") {
+      this.direction = "up";
+    } else if (this.direction === "down") {
+      this.direction = "up";
     }
   }
 }
 
-/*public turn() {
-    if (this.currentDirection === 1) {
-      this.currentDirection = -1;
-    } else if (this.currentDirection === -1) {
-      this.currentDirection = 1;
-    }
-  }
-}*/
-
 export default Snake;
-

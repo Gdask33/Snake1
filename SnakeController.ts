@@ -5,8 +5,8 @@ import Snake from "./Snake";
  * Controller class responsible for managing the Snake's actions in the game world.
  */
 class SnakeController {
-  private snakeWorld: WorldModel;
-  private slitherer: Snake;
+  private snakeWorld__: WorldModel;
+  private slitherer__: Snake;
 
   /**
    * Constructs a new SnakeController instance.
@@ -15,10 +15,15 @@ class SnakeController {
    * @param slitherer - The Snake that this controller manages.
    */
   constructor(snakeWorld: WorldModel, slitherer: Snake) {
-    this.snakeWorld = snakeWorld;
-    this.slitherer = slitherer;
+    this.snakeWorld__ = snakeWorld;
+    this.slitherer__ = slitherer;
   }
-
+  public get slitherer() {
+    return this.slitherer__;
+  }
+  public get snakeWorld() {
+    return this.snakeWorld__;
+  }
   /**
    * Turns the Snake to the left.
    */
@@ -34,12 +39,26 @@ class SnakeController {
   }
 
   /**
+   * Turns the Snake up.
+   */
+  public turnSnakeUp() {
+    this.slitherer.turnUp();
+  }
+
+  /**
+   * Turns the Snake down.
+   */
+  public turnSnakeDown() {
+    this.slitherer.turnDown();
+  }
+
+  /**
    * Retrieves the position of the Snake.
    *
    * @returns The position of the Snake as a Point.
    */
-  public getsnakePosition() {
-    return this.snakeWorld.getSnake().getposition();
+  public get snakePosition() {
+    return this.slitherer.position;
   }
 
   /**
@@ -47,8 +66,8 @@ class SnakeController {
    *
    * @returns The direction of the Snake as a string ("up", "down", "left", or "right").
    */
-  public getsnakeDirection() {
-    return this.snakeWorld.getSnake().getdirection();
+  public get snakeDirection() {
+    return this.snakeWorld.SnakeDirection;
   }
 
   /**
@@ -56,8 +75,8 @@ class SnakeController {
    *
    * @returns The width of the game world.
    */
-  public getworldWidth() {
-    return this.snakeWorld.getWorldWidth();
+  public get worldWidth() {
+    return this.snakeWorld.WorldWidth;
   }
 
   /**
@@ -65,8 +84,8 @@ class SnakeController {
    *
    * @returns The height of the game world.
    */
-  public getworldHeight() {
-    return this.snakeWorld.getWorldHeight();
+  public get worldHeight() {
+    return this.snakeWorld.WorldHeight;
   }
 
   /**
@@ -74,8 +93,8 @@ class SnakeController {
    *
    * @returns The Snake object.
    */
-  public getsnake() {
-    return this.snakeWorld.getSnake();
+  public get snake() {
+    return this.snakeWorld.snake;
   }
 
   /**
@@ -83,7 +102,7 @@ class SnakeController {
    *
    * @returns The WorldModel object.
    */
-  public getWorldModel() {
+  public get WorldModel() {
     return this.snakeWorld;
   }
 }
