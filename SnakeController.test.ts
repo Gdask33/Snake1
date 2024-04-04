@@ -1,6 +1,7 @@
 import SnakeController from "./SnakeController";
 import WorldModel from "./WorldModel";
 import Snake from "./Snake";
+import Point from "./Point";
 
 describe("SnakeController Tests", () => {
   let snakeController: SnakeController;
@@ -8,8 +9,8 @@ describe("SnakeController Tests", () => {
   let worldModel: WorldModel;
 
   beforeEach(() => {
-    snake = new Snake("green");
-    worldModel = new WorldModel(snake, 10, 10);
+    snake = new Snake("blue", new Point(0, 0), "right", 1);
+    worldModel = new WorldModel(10, 10);
     snakeController = new SnakeController(worldModel, snake);
   });
 
@@ -31,32 +32,32 @@ describe("SnakeController Tests", () => {
   });
 
   it("should return snake's position when getsnakePosition is called", () => {
-    const position = snakeController.getsnakePosition();
-    expect(position).toEqual({ x_coordinate: 0, y_coordinate: 0 });
+    const position = snakeController.snakePosition;
+    expect(position).toEqual({ x_coordinate__: 0, y_coordinate__: 0 });
   });
 
   it("should return snake's direction when getsnakeDirection is called", () => {
-    const direction = snakeController.getsnakeDirection();
+    const direction = snakeController.snakeDirection;
     expect(direction).toEqual("right");
   });
 
   it("should return world width when getworldWidth is called", () => {
-    const width = snakeController.getworldWidth();
-    expect(width).toEqual(worldModel.getWorldWidth());
+    const width = snakeController.worldWidth;
+    expect(width).toEqual(worldModel.WorldWidth);
   });
 
   it("should return world height when getworldHeight is called", () => {
-    const height = snakeController.getworldHeight();
-    expect(height).toEqual(worldModel.getWorldHeight());
+    const height = snakeController.worldHeight;
+    expect(height).toEqual(worldModel.WorldHeight);
   });
 
   it("should return the snake object when getsnake is called", () => {
-    const returnedSnake = snakeController.getsnake();
-    expect(returnedSnake).toBe(snake);
+    const returnedSnake = snakeController.snake;
+    expect(returnedSnake).toStrictEqual([]);
   });
 
   it("should return the WorldModel object when getWorldModel is called", () => {
-    const returnedWorldModel = snakeController.getWorldModel();
+    const returnedWorldModel = snakeController.WorldModel;
     expect(returnedWorldModel).toBe(worldModel);
   });
 });

@@ -2,49 +2,49 @@ import SnakeController from "./SnakeController";
 import Player from "./Player";
 import Snake from "./Snake";
 import WorldModel from "./WorldModel"; // Import the Player class
+import Point from "./Point";
 
 describe("Player Tests", () => {
-  let snakeController: SnakeController;
+  let snakeController: SnakeController[];
 
   // Create a SnakeController instance before each test
   beforeEach(() => {
     // Create a mock WorldModel and Snake instance for SnakeController
-    const mockSnake = new Snake("green");
-    const mockWorldModel = new WorldModel(mockSnake, 10, 10);
+    const mockSnake = new Snake("blue", new Point(0, 0), "right", 1);
+    const mockWorldModel = new WorldModel(10, 10);
 
-    snakeController = new SnakeController(mockWorldModel, mockSnake);
+    let snakeController = new SnakeController(mockWorldModel, mockSnake);
   });
   it("should initialize Player with SnakeController", () => {
     // Create a concrete Player subclass
     class TestPlayer extends Player {
       makeTurn(): void {
-        const snake = this.sc.getsnake();
-        const snakeDirection = this.sc.getsnakeDirection();
-        const worldModel = this.sc.getWorldModel();
-        const direction = snake.getdirection();
-        const position = snake.getposition();
-        const worldHeight = worldModel.getWorldHeight();
-        const worldWidth = worldModel.getWorldWidth();
+        const snake = new Snake("blue", new Point(0, 0), "right", 1);
+        const worldModel = new WorldModel(10, 10);
+        const direction = snake.direction;
+        const position = snake.position;
+        const worldHeight = worldModel.WorldHeight;
+        const worldWidth = worldModel.WorldWidth;
 
         if (direction === "left" && position.x === 0) {
-          this.sc.turnSnakeLeft();
+          snake.turnLeft();
           return;
         }
 
         if (direction === "right" && position.x === worldWidth - 1) {
-          this.sc.turnSnakeRight();
+          snake.turnRight();
           return;
         }
 
         if (direction === "up" && position.y === 0) {
-          this.sc.turnSnakeLeft();
-          this.sc.turnSnakeLeft();
+          snake.turnLeft();
+          snake.turnLeft();
           return;
         }
 
         if (direction === "down" && position.y === worldHeight - 1) {
-          this.sc.turnSnakeRight();
-          this.sc.turnSnakeRight();
+          snake.turnRight();
+          snake.turnRight();
           return;
         }
       }

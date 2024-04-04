@@ -1,72 +1,95 @@
 import Snake from "./Snake";
 import Point from "./Point";
+import WorldModel from "./WorldModel";
+import SnakeController from "./SnakeController";
 
-describe("Snake class", () => {
+describe("Snake Class Tests", () => {
   let snake: Snake;
+  const startingPosition = new Point(5, 5);
+  const size = 5;
+  const color = "green";
 
   beforeEach(() => {
-    snake = new Snake("green");
+    snake = new Snake(color, startingPosition, "right", size);
+    const parts = snake.parts;
+    const WorldModel1 = new WorldModel(50, 50);
+    WorldModel1.addSnakes([snake]);
+    console.log(snake.didCollide);
+    console.log(snake.position);
   });
 
-  test("constructor initializes properties correctly", () => {
-    expect(snake.position).toEqual(new Point(0, 0));
+  test("Snake initializes with correct properties", () => {
+    expect(snake.color__).toBe(color);
+    expect(snake.position).toEqual(startingPosition);
+    expect(snake.size).toBe(size);
     expect(snake.direction).toBe("right");
+    expect(snake.parts.length).toBe(size);
   });
 
-  describe("move method", () => {
+  describe("Movement", () => {
     test("moves right correctly", () => {
-      snake.move(3);
-      expect(snake.position).toEqual(new Point(3, 0));
+      snake.move(1);
+      expect(snake.position).toEqual(
+        new Point(startingPosition.x + 1, startingPosition.y),
+      );
     });
 
     test("moves left correctly", () => {
-      snake.turnLeft();
-      snake.turnLeft();
-      snake.move(3);
-      expect(snake.position).toEqual(new Point(-3, 0));
+      snake.setDirection("left");
+      snake.move(1);
+      expect(snake.position).toEqual(
+        new Point(startingPosition.x - 1, startingPosition.y),
+      );
     });
 
     test("moves up correctly", () => {
-      snake.turnLeft(); // Turn left to up
-      snake.move(3);
-      expect(snake.position).toEqual(new Point(0, 3));
+      snake.setDirection("up");
+      snake.move(1);
+      expect(snake.position).toEqual(
+        new Point(startingPosition.x, startingPosition.y - 1),
+      );
     });
 
     test("moves down correctly", () => {
-      snake.turnRight(); // Now facing down
-      snake.move(3);
-      expect(snake.position).toEqual(new Point(0, -3));
+      snake.setDirection("down");
+      snake.move(1);
+      expect(snake.position).toEqual(
+        new Point(startingPosition.x, startingPosition.y + 1),
+      );
     });
-  });
 
-  describe("turnRight method", () => {
-    const directions = ["right", "down", "left", "up"];
-
-    directions.forEach((startDirection, index) => {
-      test(`turns from ${startDirection} to ${directions[(index + 1) % directions.length]}`, () => {
-        snake = new Snake("green"); // reset snake direction to right
-        for (let i = 0; i <= index; i++) {
-          snake.turnRight();
-        }
-        expect(snake.direction).toBe(
-          directions[(index + 1) % directions.length],
-        );
+    describe("Collision Detection", () => {
+      test("detects no collision on open move", () => {
+        snake.parts.forEach((part, index) => {
+          if (index > 0) {
+            // Skip the head itself
+            expect(snake.head.x === part.x && snake.head.y === part.y).toBe(
+              false,
+            );
+          }
+        });
       });
-    });
-  });
 
-  describe("turnLeft method", () => {
-    const directions = ["right", "up", "left", "down"];
+      test("detects collision with itself", () => {
+        // Starting direction is right, and size is 3.
+        // Move the snake right to create space for turning.
+        snake.move(2); //
+        console.log(snake.parts);
+        // Turn up or down (depending on your coordinate system, choose appropriately).
+        snake.setDirection("down"); // Assuming the positive Y-axis goes upwards.
+        snake.move(1);
+        // Turn left to head back towards the tail.
+        snake.setDirection("left");
+        snake.move(2);
 
-    directions.forEach((startDirection, index) => {
-      test(`turns from ${startDirection} to ${directions[(index + 1) % directions.length]}`, () => {
-        snake = new Snake("green"); // reset snake direction to right
-        for (let i = 0; i <= index; i++) {
-          snake.turnLeft();
-        }
-        expect(snake.direction).toBe(
-          directions[(index + 1) % directions.length],
-        );
+        // Check if the snake has collided with itself
+        expect(snake.didCollide(snake)).toBe(true);
+      });
+
+      test("detects collision with another snake", () => {
+        const otherSnake = new Snake("blue", new Point(6, 5), "left", 3);
+        snake.move(1); // Moves into the other snake
+        expect(snake.didCollide(otherSnake)).toBe(true);
       });
     });
   });

@@ -5,15 +5,15 @@ import SnakeController from "./SnakeController";
  * Subclasses of Player define specific player behaviors.
  */
 abstract class Player {
-  protected sc: SnakeController;
+  protected scs: SnakeController[];
 
   /**
    * Constructs a new Player instance.
    *
    * @param snakeController - The SnakeController associated with the player.
    */
-  constructor(snakeController: SnakeController) {
-    this.sc = snakeController;
+  constructor(snakeControllers: SnakeController[]) {
+    this.scs = snakeControllers;
   }
 
   /**

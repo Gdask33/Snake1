@@ -67,7 +67,7 @@ class SnakeController {
    * @returns The direction of the Snake as a string ("up", "down", "left", or "right").
    */
   public get snakeDirection() {
-    return this.snakeWorld.SnakeDirection;
+    return this.slitherer.direction;
   }
 
   /**
@@ -94,7 +94,7 @@ class SnakeController {
    * @returns The Snake object.
    */
   public get snake() {
-    return this.snakeWorld.snake;
+    return this.snakeWorld.snakes;
   }
 
   /**

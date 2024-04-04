@@ -1,13 +1,14 @@
 import Player from "./Player";
 import SnakeController from "./SnakeController";
 import IInputHandler from "./IInputHandler";
+import AvoidWallsPlayer from "./AvoidWallsPlayer";
 
 export default class HumanPlayer extends Player {
   private controller: SnakeController;
   private handler: IInputHandler;
 
   constructor(controller: SnakeController, handler: IInputHandler) {
-    super(controller); // Assuming the Player's constructor doesn't require parameters. Adjust if necessary.
+    super([controller]); // Assuming the Player's constructor doesn't require parameters. Adjust if necessary.
     this.controller = controller;
     this.handler = handler;
   }

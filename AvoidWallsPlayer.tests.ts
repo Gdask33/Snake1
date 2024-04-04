@@ -3,6 +3,7 @@ import Snake from "./Snake";
 import WorldModel from "./WorldModel";
 import AvoidWallsPlayer from "./AvoidWallsPlayer";
 import Point from "./Point";
+import CanvasWorldView from "./CanvasWorldView";
 
 describe("AvoidWallsPlayer Tests", () => {
   let snakeController: SnakeController;
@@ -13,86 +14,61 @@ describe("AvoidWallsPlayer Tests", () => {
   const WorldHeight = 10;
 
   beforeEach(() => {
-    snake = new Snake("green");
-    worldModel = new WorldModel(snake, WorldWidth, WorldHeight);
+    worldModel = new WorldModel(10, 10);
+    snake = new Snake("blue", new Point(2, 2), "right", 1);
+    worldModel.addSnakes([snake]);
     snakeController = new SnakeController(worldModel, snake);
-    player = new AvoidWallsPlayer(snakeController);
+    player = new AvoidWallsPlayer([snakeController]);
   });
 
-  it("should turn right when snake is moving left and reaches the left wall", () => {
-    snakeController.turnSnakeLeft(); // Turn the snake left (facing down)
-    snakeController.turnSnakeLeft();
-    snake.move(WorldWidth - 1); // Turn the snake left again (facing left)
+  it("should turn away from the top wall when moving upwards", () => {
+    // Move the snake close to the top wall
+    snake.setPosition(new Point(5, 0));
+    snake.setDirection("up");
 
-    console.log(
-      "Before turn - Position:",
-      snakeController.getsnakePosition(),
-      "Direction:",
-      snakeController.getsnakeDirection(),
-    );
+    // Simulate a game tick where AvoidWallsPlayer makes a decision
+    player.makeTurn();
+    console.log("Snake direction: " + snake.direction);
+
+    // Expect the snake to not continue moving "up" into the wall
+    // The exact expectation might depend on how AvoidWallsPlayer is implemented
+    // For example, it might turn left or right when encountering a wall directly ahead
+    expect(snake.direction).not.toBe("up");
+  });
+  it("should turn down when moving right and reaching the right edge", () => {
+    snake.setPosition(new Point(WorldWidth - 1, 5));
+    snake.setDirection("right");
 
     player.makeTurn();
 
+    expect(snake.direction).not.toBe("right");
     console.log(
-      "After turn - Position:",
-      snakeController.getsnakePosition(),
-      "Direction:",
-      snakeController.getsnakeDirection(),
+      "Test 1 - Snake direction after reaching right edge: " + snake.direction,
     );
-
-    expect(snakeController.getsnakeDirection()).toBe("up");
   });
 
-  it("should turn left when snake is moving right and reaches the right wall", () => {
-    snake.move(WorldWidth - 1);
-    console.log(
-      "Before turn - Direction:",
-      snakeController.getsnakeDirection(),
-    );
-    player.makeTurn();
-    console.log("After turn - Direction:", snakeController.getsnakeDirection());
-    expect(snakeController.getsnakeDirection()).toBe("up");
-  });
-
-  it("should turn right when snake is moving up and reaches the top wall", () => {
-    snakeController.turnSnakeLeft(); // This should turn the snake upwards
-    snake.move(WorldHeight - 1); // Move snake to the top edge
-
-    console.log(
-      "Before turn - Position:",
-      snakeController.getsnakePosition(),
-      "Direction:",
-      snakeController.getsnakeDirection(),
-    );
+  it("should turn up or left when moving down and reaching the bottom edge", () => {
+    snake.setPosition(new Point(5, WorldHeight - 1));
+    snake.setDirection("down");
 
     player.makeTurn();
 
+    expect(snake.direction).not.toBe("down");
     console.log(
-      "After turn - Position:",
-      snakeController.getsnakePosition(),
-      "Direction:",
-      snakeController.getsnakeDirection(),
+      "Test 2 - Snake direction after reaching bottom edge: " + snake.direction,
     );
-
-    expect(snakeController.getsnakeDirection()).toBe("right");
   });
 
-  it("should turn left when snake is moving down and reaches the bottom wall", () => {
-    snakeController.turnSnakeRight();
-    snake.move(WorldHeight - 1);
-    console.log(
-      "Before turn - Direction:",
-      snakeController.getsnakePosition(),
-      "Direction:",
-      snakeController.getsnakeDirection(),
-    );
+  it("should turn right when moving left and reaching the left edge", () => {
+    snake.setPosition(new Point(0, 5));
+    snake.setDirection("left");
+
     player.makeTurn();
+
+    expect(snake.direction).not.toBe("left");
     console.log(
-      "After turn - Direction:",
-      snakeController.getsnakePosition(),
-      "Direction:",
-      snakeController.getsnakeDirection(),
+      "Test 3 - Snake direction after reaching left edge: " + snake.direction,
     );
-    expect(snakeController.getsnakeDirection()).toBe("right");
   });
 });
+

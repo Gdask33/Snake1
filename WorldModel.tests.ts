@@ -6,7 +6,7 @@ describe("WorldModel Tests", () => {
 
   beforeEach(() => {
     snake = new Snake("green");
-    Model = new WorldModel(snake);
+    Model = new WorldModel(snake, 10, 10);
   });
 
   test("WorldModel updates the Snake's position correctly", () => {
@@ -19,7 +19,7 @@ describe("WorldModel Tests", () => {
     snake.turnRight();
     Model.update(2);
     expect(snake.position.x).toBe(0);
-    expect(snake.position.y).toBe(-2);
+    expect(snake.position.y).toBe(2);
   });
 
   test("Snake turns left and WorldModel updates its position correctly", () => {

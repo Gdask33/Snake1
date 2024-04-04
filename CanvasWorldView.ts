@@ -1,6 +1,7 @@
 import { clear } from "console";
 import IWorldView from "./IWorldView";
 import WorldModel from "./WorldModel";
+import Snake from "./Snake";
 export default class WorldView implements IWorldView {
   private scalingFactor: number;
   private worldCanvas: HTMLCanvasElement;
@@ -34,19 +35,19 @@ export default class WorldView implements IWorldView {
     ); // Draw the world with the specified dimensions (model.WorldWidth, model.WorldHeight);
     console.log("Dimensions:", this.worldCanvas.width, this.worldCanvas.height);
 
-    const position = model.SnakePosition;
-    console.log("Position:", position);
-
-    // Draw the snake's head based on the scaling factor
-    this.context.fillStyle = "green"; // Set the color for the snake
-    this.context.fillRect(
-      position.x * this.scalingFactor,
-      position.y * this.scalingFactor,
-      this.scalingFactor,
-      this.scalingFactor,
-    );
-    console.log("n", position.x * this.scalingFactor);
-    console.log("m", position.y * this.scalingFactor);
+    // Iterate over each snake and draw its parts
+    model.snakes.forEach((snake) => {
+      this.context.fillStyle = snake.color__; // Use each snake's color
+      snake.parts.forEach((part) => {
+        // Assuming getParts() returns the snake's parts
+        this.context.fillRect(
+          part.x * this.scalingFactor,
+          part.y * this.scalingFactor,
+          this.scalingFactor,
+          this.scalingFactor,
+        );
+      });
+    });
   }
   public get scaleFactor(): number {
     return this.scalingFactor;
@@ -67,3 +68,4 @@ export default class WorldView implements IWorldView {
     this.context = value;
   }
 }
+
