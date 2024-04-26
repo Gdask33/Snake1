@@ -18,7 +18,7 @@ export default class WorldModel {
     this.aca = aca;
   }
   public addActors(actors: IActor[]) {
-    this.allActors = this.allActors.concat(actors);
+    this.allActors = this.allActors.concat(actors)
   }
 
   public addViews(views: IWorldView[]) {
