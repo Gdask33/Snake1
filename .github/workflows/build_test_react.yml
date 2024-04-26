@@ -11,17 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [12.x, 14.x, 16.x]  # Assuming you decide to drop 10.x and 15.x
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      
+          cache: 'npm'  # This enables caching of npm modules
+
       - name: Install Dependencies
         run: npm ci
 
@@ -30,3 +32,9 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: List directory contents  # Optional step to verify setup
+        if: failure()  # This step runs only if the previous steps fail
+        run: ls -la
+
+
