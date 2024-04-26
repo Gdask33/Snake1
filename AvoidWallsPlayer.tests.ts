@@ -4,6 +4,7 @@ import WorldModel from "./WorldModel";
 import AvoidWallsPlayer from "./AvoidWallsPlayer";
 import Point from "./Point";
 import CanvasWorldView from "./CanvasWorldView";
+import ActorCollisionHandler from "./ActorCollisionHandlers";
 
 describe("AvoidWallsPlayer Tests", () => {
   let snakeController: SnakeController;
@@ -14,9 +15,10 @@ describe("AvoidWallsPlayer Tests", () => {
   const WorldHeight = 10;
 
   beforeEach(() => {
-    worldModel = new WorldModel(10, 10);
+    const collisionHandler = new ActorCollisionHandler();
+    worldModel = new WorldModel(10, 10, collisionHandler);
     snake = new Snake("blue", new Point(2, 2), "right", 1);
-    worldModel.addSnakes([snake]);
+    worldModel.addActors([snake]);
     snakeController = new SnakeController(worldModel, snake);
     player = new AvoidWallsPlayer([snakeController]);
   });
@@ -71,4 +73,3 @@ describe("AvoidWallsPlayer Tests", () => {
     );
   });
 });
-

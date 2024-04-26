@@ -2,6 +2,7 @@ import SnakeController from "./SnakeController";
 import WorldModel from "./WorldModel";
 import Snake from "./Snake";
 import Point from "./Point";
+import ActorCollisionHandler from "./ActorCollisionHandlers";
 
 describe("SnakeController Tests", () => {
   let snakeController: SnakeController;
@@ -10,11 +11,12 @@ describe("SnakeController Tests", () => {
 
   beforeEach(() => {
     snake = new Snake("blue", new Point(0, 0), "right", 1);
-    worldModel = new WorldModel(10, 10);
+    const collisionHandler = new ActorCollisionHandler();
+    worldModel = new WorldModel(10, 10, collisionHandler);
     snakeController = new SnakeController(worldModel, snake);
   });
 
-  it("should initialize snakeWorld and slitherer properties", () => {
+  it("should initialize snakeWorld,slitherer properties, and collisionHandler properties", () => {
     expect(snakeController).toHaveProperty("snakeWorld", worldModel);
     expect(snakeController).toHaveProperty("slitherer", snake);
   });
@@ -52,8 +54,9 @@ describe("SnakeController Tests", () => {
   });
 
   it("should return the snake object when getsnake is called", () => {
-    const returnedSnake = snakeController.snake;
-    expect(returnedSnake).toStrictEqual([]);
+    const returnedSnake = snakeController.slitherer;
+    expect(returnedSnake).toBeInstanceOf(Snake);
+    expect(returnedSnake).toEqual(snake);
   });
 
   it("should return the WorldModel object when getWorldModel is called", () => {

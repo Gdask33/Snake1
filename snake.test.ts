@@ -1,21 +1,19 @@
 import Snake from "./Snake";
 import Point from "./Point";
 import WorldModel from "./WorldModel";
-import SnakeController from "./SnakeController";
+import ActorCollisionHandler from "./ActorCollisionHandlers";
+import ICollidable from "./ICollidable";
 
 describe("Snake Class Tests", () => {
   let snake: Snake;
   const startingPosition = new Point(5, 5);
-  const size = 5;
+  const size = 10;
   const color = "green";
 
   beforeEach(() => {
     snake = new Snake(color, startingPosition, "right", size);
-    const parts = snake.parts;
-    const WorldModel1 = new WorldModel(50, 50);
-    WorldModel1.addSnakes([snake]);
-    console.log(snake.didCollide);
-    console.log(snake.position);
+    const worldModel = new WorldModel(50, 50, new ActorCollisionHandler());
+    worldModel.addActors([snake]);
   });
 
   test("Snake initializes with correct properties", () => {
@@ -57,40 +55,38 @@ describe("Snake Class Tests", () => {
         new Point(startingPosition.x, startingPosition.y + 1),
       );
     });
+  });
 
-    describe("Collision Detection", () => {
-      test("detects no collision on open move", () => {
-        snake.parts.forEach((part, index) => {
-          if (index > 0) {
-            // Skip the head itself
-            expect(snake.head.x === part.x && snake.head.y === part.y).toBe(
-              false,
-            );
-          }
-        });
-      });
-
-      test("detects collision with itself", () => {
-        // Starting direction is right, and size is 3.
-        // Move the snake right to create space for turning.
-        snake.move(2); //
-        console.log(snake.parts);
-        // Turn up or down (depending on your coordinate system, choose appropriately).
-        snake.setDirection("down"); // Assuming the positive Y-axis goes upwards.
-        snake.move(1);
-        // Turn left to head back towards the tail.
-        snake.setDirection("left");
-        snake.move(2);
-
-        // Check if the snake has collided with itself
-        expect(snake.didCollide(snake)).toBe(true);
-      });
-
-      test("detects collision with another snake", () => {
-        const otherSnake = new Snake("blue", new Point(6, 5), "left", 3);
-        snake.move(1); // Moves into the other snake
-        expect(snake.didCollide(otherSnake)).toBe(true);
-      });
+  describe("Collision Detection", () => {
+    const snake1 = new Snake("red", new Point(1, 1), "right", 6);
+    const snake2 = new Snake("blue", new Point(3, 3), "right", 6);
+    test("detects no collision on open move", () => {
+      snake1.move(1);
+      snake2.move(1);
+      expect(snake1.didCollideWithObject(snake2)).toBe(false);
+      expect(snake2.didCollideWithObject(snake1)).toBe(false);
     });
+  });
+
+  test("detects collisions between two snakes", () => {
+    const snake2 = new Snake("red", new Point(5, 5), "up", 6);
+    // Moves snake to set up self-collision
+    expect(snake.didCollideWithObject(snake2)).toBe(true);
+  });
+  test("detects self-collision", () => {
+    // Initialize the snake in a way that it forms a loop
+    snake = new Snake("green", new Point(2, 2), "right", 6);
+    snake.currentParts__ = [
+      new Point(2, 2), // head
+      new Point(3, 2),
+      new Point(4, 2),
+      new Point(4, 3),
+      new Point(4, 4),
+      new Point(3, 4),
+      new Point(2, 4),
+      new Point(2, 3),
+    ]; // next move to this position will cause self-collision
+    snake.move(1);
+    expect(snake.didCollideWithObject(snake)).toBe(true);
   });
 });

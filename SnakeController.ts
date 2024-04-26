@@ -93,10 +93,9 @@ class SnakeController {
    *
    * @returns The Snake object.
    */
-  public get snake() {
-    return this.snakeWorld.snakes;
+  public get controlledSnake(): Snake {
+    return this.slitherer__;
   }
-
   /**
    * Retrieves the WorldModel representing the game world.
    *

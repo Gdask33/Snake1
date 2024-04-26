@@ -36,10 +36,9 @@ export default class WorldView implements IWorldView {
     console.log("Dimensions:", this.worldCanvas.width, this.worldCanvas.height);
 
     // Iterate over each snake and draw its parts
-    model.snakes.forEach((snake) => {
-      this.context.fillStyle = snake.color__; // Use each snake's color
+    for (const snake of model.getSnakes()) {
+      this.context.fillStyle = snake.color__; // Set the color for each snake
       snake.parts.forEach((part) => {
-        // Assuming getParts() returns the snake's parts
         this.context.fillRect(
           part.x * this.scalingFactor,
           part.y * this.scalingFactor,
@@ -47,7 +46,7 @@ export default class WorldView implements IWorldView {
           this.scalingFactor,
         );
       });
-    });
+    }
   }
   public get scaleFactor(): number {
     return this.scalingFactor;
@@ -68,4 +67,3 @@ export default class WorldView implements IWorldView {
     this.context = value;
   }
 }
-
