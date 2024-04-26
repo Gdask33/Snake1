@@ -13,10 +13,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [12.x, 14.x, 16.x]  
+        node-version: [16.x, 18.x, 20.x]  # Use newer versions including the latest LTS and stable
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3  # Make sure you use the latest version
 
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -36,4 +36,3 @@ jobs:
       - name: List directory contents  # Optional step to verify setup
         if: failure()  # This step runs only if the previous steps fail
         run: ls -la
-
