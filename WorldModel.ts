@@ -83,7 +83,7 @@ export default class WorldModel {
 
     // Update all views once after handling game logic
     this.allViews.forEach((view) => {
-      view.display(this)
+      view.display(this);
     });
 
     console.log(this.allActors);
