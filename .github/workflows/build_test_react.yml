@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [12.x, 14.x, 16.x]  # Assuming you decide to drop 10.x and 15.x
+        node-version: [12.x, 14.x, 16.x, 20.x]  # Updated to include Node.js 20
 
     steps:
       - uses: actions/checkout@v2
@@ -36,5 +36,4 @@ jobs:
       - name: List directory contents  # Optional step to verify setup
         if: failure()  # This step runs only if the previous steps fail
         run: ls -la
-
 
